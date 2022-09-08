@@ -1,0 +1,350 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>Word Counter</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@200&family=Open+Sans:wght@400;500&family=Oswald&family=PT+Serif:wght@700&family=Updock&display=swap');
+
+    [data-aos] {
+    pointer-events: none;
+  }
+  .aos-animate {
+    pointer-events: auto;
+  }
+  .aos-init[data-aos][data-aos].aos-animate {
+    transform: unset;
+  }
+
+
+    body {
+        margin: 0;
+        background-color: #a9a9e9;
+        position: relative;
+    }
+
+    .page {
+        position: relative;
+        background-image: radial-gradient(circle at center center, #0b1078, #5555c2), repeating-radial-gradient(circle at center center, #7575B0, #07315B, 25px, transparent 50px, transparent 50px);
+        background-blend-mode: multiply;
+        position: relative;
+        height: 100vh;
+    }
+
+    .page_inner {
+
+        justify-self: center;
+    }
+
+    .text {
+
+        padding-top: 25vh;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .text h3 {
+        font-family: 'PT Serif', serif;
+        font-size: 65px;
+        margin: 0;
+    }
+
+    .text p {
+        font-family: 'PT Serif', serif;
+        font-size: 18px;
+    }
+
+    .inner_button {
+        padding: 20px 40px;
+        background-color: rgba(128, 128, 128, 0.39);
+        width: fit-content;
+        justify-self: center;
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: 10px;
+    }
+
+    .buttons {
+
+        display: grid;
+    }
+
+    button {
+        padding: 13px 30px;
+        margin: 0px 20px;
+        font-family: 'PT Serif', serif;
+        background-color: #07165b;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 17px;
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+
+    button:hover {
+        border: 2px #07315B solid;
+        background-color: white;
+        color: #07315B;
+        transition: 0.5s;
+    }
+
+
+    /* paste */
+
+    .form {
+        padding-top: 25vh;
+        display: grid;
+    }
+
+    .form_inner {
+        background-color: white;
+        padding: 30px;
+        width: 65%;
+        justify-self: center;
+        border-radius: 5px;
+    }
+
+    .form_inner h3 {
+        margin: 0;
+        font-family: 'PT Serif', serif;
+        font-size: 30px;
+        color: #07165b;
+    }
+
+    .field_text textarea {
+        margin: 10px 0px;
+        height: 200px;
+        width: 100%;
+        border: 2px #07165b solid;
+        border-radius: 9px;
+        outline: #4963d6;
+        color: #07165b;
+
+    }
+
+
+    .form button {
+        margin: 0;
+    }
+
+    #paste {
+        display: none;
+    }
+
+
+    .amount {
+        justify-self: center;
+        height: 100vh;
+        width: 100%;
+        justify-self: center;
+        position: absolute;
+        top: 0;
+        background-color: #07165bf3;
+        text-align: center;
+        font-family: 'PT Serif', serif;
+        color: white;
+        z-index: 990;
+    }
+
+    .amount h3 {
+        padding-top: 25vh;
+        font-size: 45px;
+    }
+
+    .amount_wrap {
+        display: grid;
+
+
+    }
+
+    .amount button {
+        border: 2px white solid;
+    }
+
+
+
+
+
+    @media screen and (max-width:650px) {
+        .text h3 {
+            font-size: 50px;
+        }
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+
+        $('#paste_button').click(function () {
+            $('#landing').hide();
+            $('#paste').slideToggle();
+        })
+
+    });
+
+
+
+    $(document).ready(function () {
+
+        $('#backtopaste').click(function () {
+            $('#amount').hide();
+
+        });
+
+    })
+
+
+</script>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="page">
+        <div class="page_inner">
+
+            {% if amt %}
+            <div class="amount_wrap" id="amount">
+                <div class="amount">
+
+
+
+                    <h3>Total number of  words: {{amt}} </h3>
+
+                    <button id="backtopaste"> <i class=" fa fa-arrow-left"></i> Back</button>
+
+                </div>
+            </div>
+            {% endif %}
+
+
+            <div class="wrap" id="landing" data-aos="zoom-in-up" data-aos-duration="1200">
+                <div class="text">
+                    <h3>Just Paste It!</h3>
+                    <p>A simple web application that counts the total amount of words you have in your sentence, article and more.</p>
+                </div>
+
+                <div class="buttons">
+                    <div class="inner_button">
+                        <button id="paste_button">Paste Text</button>
+
+                        <!-- <form action="">
+                            <button class="file">Import Text File</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="wrap" id="paste">
+                <div class="form">
+
+                    <div class="form_inner">
+
+                        <div class="form_text">
+                            <h3>Paste Your Text Here</h3>
+                        </div>
+
+                        <form method="Post" action="/">
+                            {% csrf_token %}
+
+                            <div class="field_text">
+                                <!-- <input type="text" name="text" id="" required> -->
+                                <textarea name="text" id="" cols="30" rows="10" required></textarea>
+                            </div>
+
+                            <div class="field">
+                                <button type="submit">Count</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+            <!-- 
+            <div class="wrap" id="file">
+
+                <div class="form">
+
+                    <div class="form_inner">
+                        <div class="form_text">
+                            <h3>Upload Your File</h3>
+                        </div>
+
+
+                        <form action="count" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="field_file">
+                                <input type="file" name="file">
+                            </div>
+
+                            <div class="field">
+                                <button type="submit">Count</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div> -->
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>    AOS.init(); </script>
+    
+
+</body>
+
+</html>
